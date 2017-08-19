@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AspNetCoreRateLimit.Core;
 
 namespace AspNetCoreRateLimit
 {
@@ -75,7 +74,7 @@ namespace AspNetCoreRateLimit
                     matchingGeneralLimits.AddRange(pathLimits);
 
                     // search for rules with endpoints like "matching_verb:/matching_path" in general rules
-                    var verbLimits = _options.GeneralRules.Where(l => $"{identity.HttpVerb}:{identity.Path}".ToLowerInvariant().IsMatch(l.Endpoint.ToLowerInvariant())).AsEnumerable();
+                    var verbLimits = _options.GeneralRules.Where(l => $"{identity.HttpVerb}:{identity.Path}".ToLowerInvariant().Contains(l.Endpoint.ToLowerInvariant())).AsEnumerable();
                     matchingGeneralLimits.AddRange(verbLimits);
                 }
                 else

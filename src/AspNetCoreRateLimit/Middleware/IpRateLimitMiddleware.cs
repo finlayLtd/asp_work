@@ -98,7 +98,7 @@ namespace AspNetCoreRateLimit
         public virtual ClientRequestIdentity SetIdentity(HttpContext httpContext)
         {
             var clientId = "anon";
-            if (httpContext.Request.Headers.Keys.Contains(_options.ClientIdHeader,StringComparer.CurrentCultureIgnoreCase))
+            if (httpContext.Request.Headers.Keys.Contains(_options.ClientIdHeader))
             {
                 clientId = httpContext.Request.Headers[_options.ClientIdHeader].First();
             }
