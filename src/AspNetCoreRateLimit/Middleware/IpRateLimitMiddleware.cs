@@ -5,7 +5,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace AspNetCoreRateLimit
 {
     public class IpRateLimitMiddleware
@@ -21,13 +20,12 @@ namespace AspNetCoreRateLimit
             IRateLimitCounterStore counterStore,
             IIpPolicyStore policyStore,
             ILogger<IpRateLimitMiddleware> logger,
-            IIpAddressParser ipParser = null
-            )
+            IIpAddressParser ipParser = null)
         {
             _next = next;
             _options = options.Value;
             _logger = logger;
-            _ipParser = ipParser != null ? ipParser : new ReversProxyIpParser(_options.RealIpHeader);
+            _ipParser = ipParser ?? new ReversProxyIpParser(_options.RealIpHeader);
 
             _processor = new IpRateLimitProcessor(_options, counterStore, policyStore, _ipParser);
         }
@@ -90,7 +88,7 @@ namespace AspNetCoreRateLimit
                     LogBlockedRequest(httpContext, identity, counter, rule);
 
                     // break execution (Int32 max used to represent infinity)
-                    await ReturnQuotaExceededResponse(httpContext, rule, Int32.MaxValue.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                    await ReturnQuotaExceededResponse(httpContext, rule, int.MaxValue.ToString(System.Globalization.CultureInfo.InvariantCulture));
                     return;
                 }
             }
@@ -116,7 +114,7 @@ namespace AspNetCoreRateLimit
                 clientId = httpContext.Request.Headers[_options.ClientIdHeader].First();
             }
 
-            var clientIp = string.Empty;
+            string clientIp;
             try
             {
                 var ip = _ipParser.GetClientIp(httpContext);
@@ -143,7 +141,7 @@ namespace AspNetCoreRateLimit
 
         public virtual Task ReturnQuotaExceededResponse(HttpContext httpContext, RateLimitRule rule, string retryAfter)
         {
-            var message = string.Format(_options.QuotaExceededMessage ?? "API calls quota exceeded! maximum admitted {0} per {1}.", rule.Limit, rule.Period);
+            var message = string.IsNullOrEmpty(_options.QuotaExceededMessage) ? $"API calls quota exceeded! maximum admitted {rule.Limit} per {rule.Period}." : _options.QuotaExceededMessage;
 
             if (!_options.DisableRateLimitHeaders)
             {
