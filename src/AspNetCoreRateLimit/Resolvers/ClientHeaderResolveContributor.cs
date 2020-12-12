@@ -6,15 +6,20 @@ namespace AspNetCoreRateLimit
 {
     public class ClientHeaderResolveContributor : IClientResolveContributor
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _headerName;
 
-        public ClientHeaderResolveContributor(string headerName)
+        public ClientHeaderResolveContributor(
+            IHttpContextAccessor httpContextAccessor,
+            string headerName)
         {
+            _httpContextAccessor = httpContextAccessor;
             _headerName = headerName;
         }
-        public Task<string> ResolveClientAsync(HttpContext httpContext)
+        public Task<string> ResolveClientAsync()
         {
             string clientId = null;
+            var httpContext = _httpContextAccessor.HttpContext;
 
             if (httpContext.Request.Headers.TryGetValue(_headerName, out var values))
             {

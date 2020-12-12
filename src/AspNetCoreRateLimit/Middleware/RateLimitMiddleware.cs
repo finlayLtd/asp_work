@@ -126,7 +126,7 @@ namespace AspNetCoreRateLimit
             {
                 foreach (var resolver in _config.ClientResolvers)
                 {
-                    clientId = await resolver.ResolveClientAsync(httpContext);
+                    clientId = await resolver.ResolveClientAsync();
 
                     if (!string.IsNullOrEmpty(clientId))
                     {
@@ -139,7 +139,7 @@ namespace AspNetCoreRateLimit
             {
                 foreach (var resolver in _config.IpResolvers)
                 {
-                    clientIp = resolver.ResolveIp(httpContext);
+                    clientIp = resolver.ResolveIp();
 
                     if (!string.IsNullOrEmpty(clientIp))
                     {
