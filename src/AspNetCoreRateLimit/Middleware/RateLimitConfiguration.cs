@@ -22,13 +22,15 @@ namespace AspNetCoreRateLimit
             IpRateLimitOptions = ipOptions?.Value;
             ClientRateLimitOptions = clientOptions?.Value;
             HttpContextAccessor = httpContextAccessor;
+
+            RegisterResolvers();
         }
 
         protected readonly IpRateLimitOptions IpRateLimitOptions;
         protected readonly ClientRateLimitOptions ClientRateLimitOptions;
         protected readonly IHttpContextAccessor HttpContextAccessor;
 
-        public virtual void RegisterResolvers()
+        protected virtual void RegisterResolvers()
         {
             if (!string.IsNullOrEmpty(ClientRateLimitOptions?.ClientIdHeader) || !string.IsNullOrEmpty(IpRateLimitOptions?.ClientIdHeader))
             {

@@ -24,7 +24,6 @@ namespace AspNetCoreRateLimit
             _options = options;
             _processor = processor;
             _config = config;
-            _config.RegisterResolvers();
         }
 
         public async Task Invoke(HttpContext context)
@@ -37,7 +36,7 @@ namespace AspNetCoreRateLimit
             }
 
             // compute identity from request
-            var identity = await ResolveIdentityAsync(context);
+            var identity = ResolveIdentity(context);
 
             // check white list
             if (_processor.IsWhitelisted(identity))
@@ -117,7 +116,7 @@ namespace AspNetCoreRateLimit
             await _next.Invoke(context);
         }
 
-        public virtual async Task<ClientRequestIdentity> ResolveIdentityAsync(HttpContext httpContext)
+        public virtual ClientRequestIdentity ResolveIdentity(HttpContext httpContext)
         {
             string clientIp = null;
             string clientId = null;
@@ -126,7 +125,7 @@ namespace AspNetCoreRateLimit
             {
                 foreach (var resolver in _config.ClientResolvers)
                 {
-                    clientId = await resolver.ResolveClientAsync();
+                    clientId = resolver.ResolveClient();
 
                     if (!string.IsNullOrEmpty(clientId))
                     {

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AspNetCoreRateLimit
 {
@@ -16,7 +15,7 @@ namespace AspNetCoreRateLimit
             _httpContextAccessor = httpContextAccessor;
             _headerName = headerName;
         }
-        public Task<string> ResolveClientAsync()
+        public string ResolveClient()
         {
             string clientId = null;
             var httpContext = _httpContextAccessor.HttpContext;
@@ -26,7 +25,7 @@ namespace AspNetCoreRateLimit
                 clientId = values.First();
             }
 
-            return Task.FromResult(clientId);
+            return clientId;
         }
     }
 }
