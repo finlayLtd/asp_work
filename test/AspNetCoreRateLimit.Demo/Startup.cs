@@ -26,22 +26,19 @@ namespace AspNetCoreRateLimit.Demo
             // needed to store rate limit counters and ip rules
             services.AddMemoryCache();
 
-            // configure ip rate limiting middleware - version 4.0
-
-            // configure client rate limiting middleware - version 4.0
-
             // configure ip rate limiting middleware
             services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
             services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 
             // configure client rate limiting middleware
             services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
             services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+            services.AddSingleton<IClientPolicyStore, MemoryCacheClientPolicyStore>();
+            //services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 
-            // register stores
-            services.AddMemoryCacheStores();
-
-            services.AddMvc((options) =>
+            services.AddMvc((options) => 
             {
                 options.EnableEndpointRouting = false;
 
