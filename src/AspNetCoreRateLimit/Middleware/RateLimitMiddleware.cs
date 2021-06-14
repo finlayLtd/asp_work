@@ -77,13 +77,10 @@ namespace AspNetCoreRateLimit
                             await _options.RequestBlockedBehaviorAsync(context, identity, rateLimitCounter, rule);
                         }
 
-                        if (!rule.MonitorMode)
-                        {
-                            // break execution
-                            await ReturnQuotaExceededResponse(context, rule, retryAfter);
+                        // break execution
+                        await ReturnQuotaExceededResponse(context, rule, retryAfter);
 
-                            return;
-                        }
+                        return;
                     }
                 }
                 // if limit is zero or less, block the request.
@@ -97,13 +94,10 @@ namespace AspNetCoreRateLimit
                         await _options.RequestBlockedBehaviorAsync(context, identity, rateLimitCounter, rule);
                     }
 
-                    if (!rule.MonitorMode)
-                    {
-                        // break execution (Int32 max used to represent infinity)
-                        await ReturnQuotaExceededResponse(context, rule, int.MaxValue.ToString(System.Globalization.CultureInfo.InvariantCulture));
+                    // break execution (Int32 max used to represent infinity)
+                    await ReturnQuotaExceededResponse(context, rule, int.MaxValue.ToString(System.Globalization.CultureInfo.InvariantCulture));
 
-                        return;
-                    }
+                    return;
                 }
 
                 rulesDict.Add(rule, rateLimitCounter);
