@@ -22,11 +22,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="AspNetCoreRateLimit" Version="4.0.1" />
+    <PackageReference Include="AspNetCoreRateLimit" Version="4.0.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' or '$(APPVEYOR)' == 'true'">
