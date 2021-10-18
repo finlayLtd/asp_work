@@ -153,13 +153,11 @@ namespace AspNetCoreRateLimit
                     }
                 }
             }
-            var path = httpContext.Request.Path.ToString().ToLowerInvariant();
+
             return new ClientRequestIdentity
             {
                 ClientIp = clientIp,
-                Path = path == "/"
-                    ? path
-                    : path.TrimEnd('/'),
+                Path = httpContext.Request.Path.ToString().ToLowerInvariant().TrimEnd('/'),
                 HttpVerb = httpContext.Request.Method.ToLowerInvariant(),
                 ClientId = clientId ?? "anon"
             };
