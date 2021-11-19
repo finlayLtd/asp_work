@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;netstandard2.0;net5.0;</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netstandard2.0;net5.0;net6.0;</TargetFrameworks>
     <Description>StackExchange Redis support for ASP.NET Core rate limiting middleware</Description>
     <Authors>Nick Cromwell, Cristi Pufu</Authors>
     <AssemblyName>AspNetCoreRateLimit.Redis</AssemblyName>
@@ -22,7 +22,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.79" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
